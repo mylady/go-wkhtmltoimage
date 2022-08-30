@@ -66,10 +66,16 @@ func GenerateImage(options *ImageOptions) ([]byte, error) {
 	}
 
 	output, err := cmd.CombinedOutput()
+	if err != nil {
+  	    return nil, err
+	}
 
-	trimmed := cleanupOutput(output, options.Format)
-
-	return trimmed, err
+	if len(output) > 0 {
+  	    trimmed := cleanupOutput(output, options.Format)
+  	    return trimmed, nil
+	}
+	
+	return nil, nil
 }
 
 // buildParams takes the image options set by the user and turns them into command flags for wkhtmltoimage
